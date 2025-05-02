@@ -1,0 +1,49 @@
+@import "../../../../assets/css/main.css";
+
+.docs-content {
+  h1 {
+    @apply mb-8 text-4xl;
+  }
+
+  h2 {
+    @apply my-8 text-3xl;
+  }
+
+  h3 {
+    @apply my-8 text-2xl;
+  }
+
+  ol {
+    @apply list-decimal list-inside;
+  }
+
+  ul {
+    @apply list-disc list-inside;
+  }
+
+  p,
+  ul,
+  ol {
+    @apply mb-4;
+
+    a {
+      @apply underline hover:no-underline;
+    }
+  }
+
+  .file-path {
+    p {
+      @apply mb-0;
+    }
+
+    a {
+      @apply no-underline;
+    }
+  }
+
+  .alert {
+    p {
+      @apply mb-0;
+    }
+  }
+}
