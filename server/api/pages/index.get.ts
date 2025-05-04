@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import * as schema from '~/server/db/schema'
 
 const rules = z.object({
   limit: z.string().min(1).default('5'),
@@ -20,6 +21,19 @@ export default defineEventHandler(async (event) => {
   }
 
   const db = useDb()
+
+  const {
+    db: { binding },
+  } = useRuntimeConfig()
+
+  const dbWithGenericType = useDatabaseRepoWithGenericTypes<typeof schema>(
+    binding,
+    schema,
+  )
+
+  // TODO: Here pages any, it's not found in the schema with generic types
+  // @ts-expect-error pages doesn't exist in type {}
+  dbWithGenericType.query.pages.findMany()
 
   return await db.query.pages.findMany({
     where: (schema, { isNull }) => {
