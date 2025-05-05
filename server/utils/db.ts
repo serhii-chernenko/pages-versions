@@ -4,31 +4,9 @@ import * as schema from '../db/schema'
 
 export { schema as schemaPages }
 
-export function useDb() {
-  const {
-    db: { binding },
-    drizzle: { debug: logger },
-  } = useRuntimeConfig()
+const memo: Record<string, DrizzleD1Database<any>> = {}
 
-  if (!binding) {
-    throw new Error('DB binding is not defined in runtime config')
-  }
-
-  const db = (globalThis as any).__env__[binding]
-
-  if (!db) {
-    throw createError(`Database not found in ENV: ${binding}`)
-  }
-
-  return drizzle(db, {
-    schema,
-    logger,
-  })
-}
-
-const memo: Record<string, DrizzleD1Database> = {}
-
-export function useDatabaseRepoWithGenericTypes<T>(
+export function useDatabase<T extends Record<string, unknown>>(
   binding: string,
   schema: any,
 ) {
@@ -53,6 +31,13 @@ export function useDatabaseRepoWithGenericTypes<T>(
     })
   }
 
-  // @ts-expect-error
-  return memo[binding] as DrizzleD1Database<Record<string, T>>
+  return memo[binding] as DrizzleD1Database<T>
+}
+
+export function usePagesDatabase() {
+  const {
+    db: { binding },
+  } = useRuntimeConfig()
+
+  return useDatabase<typeof schema>(binding, schema)
 }
