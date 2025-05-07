@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const db = useDb()
+  const db = usePagesDatabase()
   const amount = await db.query.pages.findMany()
 
   if (amount.length >= 5) {
