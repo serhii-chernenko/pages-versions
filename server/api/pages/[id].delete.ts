@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const db = useDb()
+  const db = usePagesDatabase()
 
   return await db
     .delete(schemaPages.pages)
